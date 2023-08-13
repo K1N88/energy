@@ -15,7 +15,11 @@ get_user_manager_context = contextlib.asynccontextmanager(get_user_manager)
 
 
 async def create_user(
-    email: EmailStr, password: str, first_name: str, last_name: str, is_superuser: bool = False
+    email: EmailStr,
+    password: str,
+    first_name: str,
+    last_name: str,
+    is_superuser: bool = False
 ):
     try:
         async with get_async_session_context() as session:

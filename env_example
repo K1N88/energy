@@ -1,0 +1,8 @@
+APP_TITLE=title
+APP_DESCRIPTION=description
+DATABASE_URL=sqlite+aiosqlite:///./dbname.db
+SECRET=secret
+FIRST_SUPERUSER_EMAIL=admin@mail.com
+FIRST_SUPERUSER_PASSWORD=adminpassword
+FIRST_SUPERUSER_NAME=adminname
+FIRST_SUPERUSER_LAST_NAME=adminlastname

@@ -1,4 +1,3 @@
-from datetime import datetime
 from typing import Optional
 
 from fastapi.encoders import jsonable_encoder
@@ -12,30 +11,6 @@ class CRUDBase:
 
     def __init__(self, model):
         self.model = model
-
-    async def update_fully_invested(
-        self,
-        db_obj,
-        session: AsyncSession,
-    ):
-        setattr(db_obj, 'fully_invested', True)
-        setattr(db_obj, 'close_date', datetime.now())
-        session.add(db_obj)
-        await session.commit()
-        await session.refresh(db_obj)
-        return db_obj
-
-    async def get_project_id_by_name(
-        self,
-        project_name: str,
-        session: AsyncSession,
-    ) -> Optional[int]:
-        db_project_id = await session.execute(
-            select(self.model.id).where(
-                self.model.name == project_name
-            )
-        )
-        return db_project_id.scalars().first()
 
     async def get(
         self,
@@ -96,26 +71,3 @@ class CRUDBase:
         await session.delete(db_obj)
         await session.commit()
         return db_obj
-
-    async def get_by_attribute(
-        self,
-        attr_name: str,
-        attr_value: str,
-        session: AsyncSession,
-    ):
-        attr = getattr(self.model, attr_name)
-        db_obj = await session.execute(
-            select(self.model).where(attr == attr_value)
-        )
-        return db_obj.scalars().first()
-
-    async def get_not_closed(
-        self,
-        session: AsyncSession,
-    ):
-        db_obj = await session.execute(
-            select(self.model).where(
-                self.model.fully_invested == 0
-            ).order_by(self.model.create_date)
-        )
-        return db_obj.scalars().all()
